@@ -54,40 +54,24 @@
                     </div>
                 </div>
 
-                <!-- En-tête de Navigation -->
-<header class="bg-white shadow-sm border-b">
-  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-    <!-- Logo -->
-    <div class="flex items-center gap-3">
-      <img src="logo.png" alt="Mamá Rosy" class="h-10 w-10">
-      <div>
-        <h1 class="font-bold text-red-600">Mamá Rosy</h1>
-        <p class="text-xs text-gray-500">CALIDAD & TRADICIÓN</p>
-      </div>
-    </div>
-
-                        <!-- Menú de navegación público -->
-                        <nav class="flex items-center gap-4">
-                        <button onclick="showSection('menu')" class="nav-btn font-medium text-gray-700 hover:text-red-600">🍽️ Menú</button>
-                        <button onclick="showSection('pedido')" class="nav-btn font-medium text-gray-700 hover:text-red-600">🛒 Pedido</button>
-                        <button onclick="showSection('contacto')" class="nav-btn font-medium text-gray-700 hover:text-red-600">📍 Contacto</button>
-
-                        <!-- Botones protegidos por contraseña (Ocultos por defecto) -->
-                        <button id="btn-pedidos" onclick="showSection('pedidos')" class="nav-btn hidden font-medium text-gray-700 hover:text-red-600">📅 Pedidos & Reservas</button>
-                        <button id="btn-inventario" onclick="showSection('inventario')" class="nav-btn hidden font-medium text-gray-700 hover:text-red-600">📦 Inventario (Jefa)</button>
-
-                        <!-- Botón para Iniciar Sesión de Administrador -->
-                        <button id="btn-login" onclick="openLoginModal()" class="bg-red-600 text-white px-4 py-1.5 rounded-full font-medium text-sm hover:bg-red-700">
-                            🔑 Acceso Admin
-                        </button>
-
-                        <!-- Botón para Cerrar Sesión (Oculto al inicio) -->
-                        <button id="btn-logout" onclick="logoutAdmin()" class="hidden bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm hover:bg-gray-300">
-                            Cerrar Sesión
-                        </button>
-                        </nav>
-                    </div>
-                    </header>
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('menu')" id="nav-menu" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold transition text-rosyRed bg-red-50">
+                        🍽️ Menú
+                    </button>
+                    <button onclick="switchTab('pedido')" id="nav-pedido" class="nav-btn relative px-4 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-rosyRed hover:bg-gray-50 transition">
+                        🛒 Pedido
+                        <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-rosyRed text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                    <button onclick="switchTab('reservas')" id="nav-reservas" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-rosyRed hover:bg-gray-50 transition">
+                        📅 Pedidos & Reservas
+                    </button>
+                    <button onclick="switchTab('contacto')" id="nav-contacto" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-rosyRed hover:bg-gray-50 transition">
+                        📍 Contacto
+                    </button>
+                    <button onclick="switchTab('inventario')" id="nav-inventario" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-rosyRed hover:bg-gray-50 transition border border-dashed border-gray-300 ml-2">
+                        📦 Inventario (Jefa)
+                    </button>
+                </nav>
 
                 <div class="md:hidden flex items-center space-x-2">
                     <button onclick="switchTab('pedido')" class="relative p-2 text-gray-700 hover:text-rosyRed text-xl">
@@ -1136,99 +1120,5 @@ const IMAGES = {
             }
         }
     </script>
-<!-- Modal Login Administrador -->
-<div id="login-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-bold text-gray-800">Acceso Administrador</h3>
-      <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-    </div>
-    
-    <div class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
-        <input type="text" id="admin-user" placeholder="Ej. admin" class="w-full border rounded-lg p-2.5 outline-none focus:border-red-500">
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-        <input type="password" id="admin-pass" placeholder="••••••••" class="w-full border rounded-lg p-2.5 outline-none focus:border-red-500">
-      </div>
-      <p id="login-error" class="text-red-600 text-sm hidden font-medium">Usuario o contraseña incorrectos.</p>
-      
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="closeLoginModal()" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50">Cancelar</button>
-        <button onclick="loginAdmin()" class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Ingresar</button>
-      </div>
-    </div>
-  </div>
-</div>
-// Configuración de credenciales de la Jefa / Admin
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "mamirosy2026"; // Cambia esta contraseña por la que desees
-
-// Funciones para abrir y cerrar el Modal
-function openLoginModal() {
-  document.getElementById("login-modal").classList.remove("hidden");
-  document.getElementById("login-error").classList.add("hidden");
-}
-
-function closeLoginModal() {
-  document.getElementById("login-modal").classList.add("hidden");
-  document.getElementById("admin-user").value = "";
-  document.getElementById("admin-pass").value = "";
-}
-
-// Función para procesar el inicio de sesión
-function loginAdmin() {
-  const user = document.getElementById("admin-user").value;
-  const pass = document.getElementById("admin-pass").value;
-
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    // Guardar sesión en el navegador
-    localStorage.setItem("isAdminLoggedIn", "true");
-    
-    // Aplicar vista de administrador
-    applyAdminView(true);
-    closeLoginModal();
-    
-    // Redirigir a Pedidos automáticamente al iniciar sesión
-    showSection('pedidos');
-  } else {
-    document.getElementById("login-error").classList.remove("hidden");
-  }
-}
-
-// Función para cerrar sesión
-function logoutAdmin() {
-  localStorage.removeItem("isAdminLoggedIn");
-  applyAdminView(false);
-  showSection('menu');
-}
-
-// Control de visibilidad de las secciones e interfaz
-function applyAdminView(isLoggedIn) {
-  const btnPedidos = document.getElementById("btn-pedidos");
-  const btnInventario = document.getElementById("btn-inventario");
-  const btnLogin = document.getElementById("btn-login");
-  const btnLogout = document.getElementById("btn-logout");
-
-  if (isLoggedIn) {
-    btnPedidos.classList.remove("hidden");
-    btnInventario.classList.remove("hidden");
-    btnLogin.classList.add("hidden");
-    btnLogout.classList.remove("hidden");
-  } else {
-    btnPedidos.classList.add("hidden");
-    btnInventario.classList.add("hidden");
-    btnLogin.classList.remove("hidden");
-    btnLogout.classList.add("hidden");
-  }
-}
-
-// Verificar si ya había iniciado sesión al cargar la página
-window.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-  applyAdminView(isLoggedIn);
-});
 </body>
 </html>
